@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: boa-lamp:latest
+    container_name: boa-lamp
+    environment:
+      - MYSQL_ADMIN_PASS=password
+      - CREATE_MYSQL_BASIC_USER_AND_DB=true
+      - MYSQL_USER_DB=drupal
+      - MYSQL_USER_NAME=drupal
+      - MYSQL_USER_PASS=drupal
+    volumes:
+      - /Users/rdyer/Desktop/boa/mysql:/var/lib/mysql
+    ports:
+      - 3000:80
+      - 3001:3306
