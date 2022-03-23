@@ -65,9 +65,11 @@ ADD https://boa.cs.iastate.edu/cloudlab/boa-runtime.jar /home/hadoop/compiler/li
 RUN chown hadoop:hadoop -R /home/hadoop/compiler
 
 # install Ace syntax highlighter
-#RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes npm nodejs
+#RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes npm
 #RUN cd /tmp ; git clone https://github.com/boalang/ace.git
 #RUN cd /tmp/ace ; npm install --no-audit ; nodejs /tmp/ace/Makefile.dryice.js full --target /app/boa/sites/all/libraries/ace
+ADD https://boa.cs.iastate.edu/cloudlab/ace.tgz /app/boa/sites/all/libraries/ace.tgz
+RUN cd /app/boa/sites/all/libraries ; tar xzf ace.tgz
 
 # replace scripts with custom versions
 ADD scripts/run.sh /run.sh
