@@ -68,7 +68,7 @@ echo "========================================================================"
 echo "=> initializing Drupal"
 pushd .
 cd /app/boa
-echo "y" | drush site-install standard --db-url=mysql://drupal:@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw= --account-name=boa --account-pass=rocks --site-name=boa
+echo "y" | drush site-install standard --db-url=mysql://drupal:@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw= --account-name=$BOA_USER --account-pass=$BOA_PW --site-name=boa
 echo "y" | drush en boa
 popd
 

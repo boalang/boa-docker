@@ -151,8 +151,8 @@ rm -f hosts2
 
 echo "===========> Boa Information <=========="
 echo "       URL: http://localhost:$WWW_PUBLISHED_PORT/boa/"
-echo "      user: boa"
-echo "  password: rocks"
+echo "      user: $BOA_USER"
+echo "  password: $BOA_PW"
 echo "===========> Boa Information <=========="
 
 echo "Starting supervisord"
