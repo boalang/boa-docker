@@ -124,14 +124,14 @@ ssh-keyscan -t ecdsa 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
 
 echo "Starting Hadoop..."
 cd /home/hadoop/hadoop-current
-if [[ $INIT ]] ; then
+if [[ "$INIT" = true ]] ; then
     echo "=> formatting namenode..."
     echo "Y" | bin/hadoop namenode -format >/dev/null 2>&1
 fi
 bin/start-dfs.sh >/dev/null 2>&1
 bin/start-mapred.sh >/dev/null 2>&1
 
-if [[ $INIT ]] ; then
+if [[ "$INIT" = true ]] ; then
     echo "=> installing live dataset..."
     cd /home/hadoop
     hadoop-current/bin/hadoop dfs -mkdir /repcache >/dev/null 2>&1
@@ -142,8 +142,9 @@ if [[ $INIT ]] ; then
     hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/ast/data /repcache/live/ast/data >/dev/null 2>&1
 fi
 
+echo "Starting Boa job poller..."
 cd /home/hadoop/bin
-./run-poller.sh >/dev/null 2>&1 &
+./run-poller.sh >>/home/hadoop/boa-poller.log 2>&1 &
 
 tail -n+2 /etc/hosts > hosts2
 echo "127.0.0.1	localhost head" >> hosts2
