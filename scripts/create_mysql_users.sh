@@ -65,11 +65,11 @@ fi
 echo "enjoy!"
 echo "========================================================================"
 
-echo "=> initializing Drupal"
-pushd .
+echo "Initializing Drupal..."
+pushd . >/dev/null 2>&1
 cd /app/boa
-echo "y" | drush site-install standard --db-url=mysql://drupal:@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw= --account-name=$BOA_USER --account-pass=$BOA_PW --site-name=boa
-echo "y" | drush en boa
-popd
+echo "y" | drush site-install standard --db-url=mysql://drupal:@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw= --account-name=$BOA_USER --account-pass=$BOA_PW --site-name=boa >/dev/null 2>&1
+echo "y" | drush en boa >/dev/null 2>&1
+popd >/dev/null 2>&1
 
 mysqladmin -uroot shutdown
