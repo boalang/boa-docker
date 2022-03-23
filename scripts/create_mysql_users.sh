@@ -17,7 +17,8 @@ echo "=> Creating MySQL admin user with ${_word} password"
 mysql -uroot -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$PASS'"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION"
 
-mysql -uroot -e " GRANT ALL PRIVILEGES ON phpmyadmin.* TO  'pma'@'localhost' IDENTIFIED BY ''"
+mysql -uroot -e "CREATE USER 'pma'@'localhost'"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON phpmyadmin.* TO 'pma'@'localhost'"
 
 CREATE_MYSQL_USER=false
 
@@ -31,10 +32,14 @@ fi
 if [ "$CREATE_MYSQL_USER" = true ]; then
     _user=${MYSQL_USER_NAME:-user}
     _userdb=${MYSQL_USER_DB:-db}
-    _userpass=${MYSQL_USER_PASS:-password}
+    _userpass=${MYSQL_USER_PASS}
 
-    mysql -uroot -e "CREATE USER '${_user}'@'%' IDENTIFIED BY  '${_userpass}'"
-    mysql -uroot -e "GRANT USAGE ON *.* TO  '${_user}'@'%' IDENTIFIED BY '${_userpass}'"
+    if [ "${_userpass}" = "" ]; then
+        mysql -uroot -e "CREATE USER '${_user}'@'%'"
+    else
+        mysql -uroot -e "CREATE USER '${_user}'@'%' IDENTIFIED BY '${_userpass}'"
+    fi
+    mysql -uroot -e "GRANT USAGE ON *.* TO '${_user}'@'%'"
     mysql -uroot -e "CREATE DATABASE IF NOT EXISTS ${_userdb}"
     mysql -uroot -e "GRANT ALL PRIVILEGES ON ${_userdb}.* TO '${_user}'@'%'"
 fi
@@ -63,7 +68,7 @@ echo "========================================================================"
 echo "=> initializing Drupal"
 pushd .
 cd /app/boa
-echo "y" | drush site-install standard --db-url=mysql://drupal:drupal@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw=drupal --account-name=boa --account-pass=rocks --site-name=boa
+echo "y" | drush site-install standard --db-url=mysql://drupal:@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw= --account-name=boa --account-pass=rocks --site-name=boa
 echo "y" | drush en boa
 popd
 
