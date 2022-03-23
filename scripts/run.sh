@@ -149,5 +149,11 @@ echo "127.0.0.1	localhost head" >> hosts2
 cat hosts2 > /etc/hosts
 rm -f hosts2
 
+echo "===========> Boa Information <=========="
+echo "       URL: http://localhost:$WWW_PUBLISHED_PORT/boa/"
+echo "      user: boa"
+echo "  password: rocks"
+echo "===========> Boa Information <=========="
+
 echo "Starting supervisord"
 exec supervisord -n
