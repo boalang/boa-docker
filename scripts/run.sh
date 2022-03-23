@@ -94,10 +94,33 @@ sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 sed -i "s/user.*/user = www-data/" /etc/mysql/mysql.conf.d/mysqld.cnf
 
-INIT=false
+service ssh start
+ssh-keyscan -t rsa localhost >> ~/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -t rsa 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -t ecdsa localhost >> ~/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -t ecdsa 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
+
+echo "Starting Hadoop..."
+cd /home/hadoop/hadoop-current
+if [[ ! -d $VOLUME_HOME/mysql ]]; then
+    echo "=> formatting namenode..."
+    echo "Y" | bin/hadoop namenode -format >/dev/null 2>&1
+fi
+bin/start-dfs.sh >/dev/null 2>&1
+bin/start-mapred.sh >/dev/null 2>&1
 
 if [[ ! -d $VOLUME_HOME/mysql ]]; then
-    INIT=true
+    echo "=> installing live dataset..."
+    cd /home/hadoop
+    hadoop-current/bin/hadoop dfs -mkdir /repcache >/dev/null 2>&1
+    hadoop-current/bin/hadoop dfs -mkdir /repcache/live >/dev/null 2>&1
+    hadoop-current/bin/hadoop dfs -mkdir /repcache/live/ast >/dev/null 2>&1
+    hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/projects.seq /repcache/live/projects.seq >/dev/null 2>&1
+    hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/ast/index /repcache/live/ast/index >/dev/null 2>&1
+    hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/ast/data /repcache/live/ast/data >/dev/null 2>&1
+fi
+
+if [[ ! -d $VOLUME_HOME/mysql ]]; then
     echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME"
     echo "=> Installing MySQL ..."
 
@@ -114,32 +137,6 @@ if [[ ! -d $VOLUME_HOME/mysql ]]; then
     /create_mysql_users.sh
 else
     echo "=> Using an existing volume of MySQL"
-fi
-
-service ssh start
-ssh-keyscan -t rsa localhost >> ~/.ssh/known_hosts 2>/dev/null
-ssh-keyscan -t rsa 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
-ssh-keyscan -t ecdsa localhost >> ~/.ssh/known_hosts 2>/dev/null
-ssh-keyscan -t ecdsa 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
-
-echo "Starting Hadoop..."
-cd /home/hadoop/hadoop-current
-if [[ "$INIT" = true ]] ; then
-    echo "=> formatting namenode..."
-    echo "Y" | bin/hadoop namenode -format >/dev/null 2>&1
-fi
-bin/start-dfs.sh >/dev/null 2>&1
-bin/start-mapred.sh >/dev/null 2>&1
-
-if [[ "$INIT" = true ]] ; then
-    echo "=> installing live dataset..."
-    cd /home/hadoop
-    hadoop-current/bin/hadoop dfs -mkdir /repcache >/dev/null 2>&1
-    hadoop-current/bin/hadoop dfs -mkdir /repcache/live >/dev/null 2>&1
-    hadoop-current/bin/hadoop dfs -mkdir /repcache/live/ast >/dev/null 2>&1
-    hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/projects.seq /repcache/live/projects.seq >/dev/null 2>&1
-    hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/ast/index /repcache/live/ast/index >/dev/null 2>&1
-    hadoop-current/bin/hadoop dfs -put /home/hadoop/live-dataset/ast/data /repcache/live/ast/data >/dev/null 2>&1
 fi
 
 echo "Starting Boa job poller..."
