@@ -24,3 +24,4 @@ services:
         target: 3306
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./data:/data
