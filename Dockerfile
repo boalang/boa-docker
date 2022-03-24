@@ -15,6 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes
 
 # install Drupal
 RUN cd /app; rm -f index.php ; drush dl drupal-7 ; mv drupal-7.*/* . ; mv drupal-7.*/.htaccess . ; rm -Rf drupal-7.*
+ADD https://api.github.com/repos/boalang/drupal/git/refs/heads/master boa-version.json
 RUN cd /app/sites/all/modules ; git clone https://github.com/boalang/drupal.git boa
 
 # fix some settings for Drupal
