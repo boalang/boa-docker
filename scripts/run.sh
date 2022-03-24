@@ -149,7 +149,7 @@ cat hosts2 > /etc/hosts
 rm -f hosts2
 
 echo "===========> Boa Information <=========="
-echo "       URL: http://localhost:$WWW_PUBLISHED_PORT/boa/"
+echo "       URL: http://localhost:$WWW_PUBLISHED_PORT/"
 echo "      user: $BOA_USER"
 echo "  password: $BOA_PW"
 echo "===========> Boa Information <=========="

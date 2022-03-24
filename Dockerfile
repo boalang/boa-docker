@@ -14,12 +14,12 @@ RUN git clone https://github.com/drush-ops/drush.git /usr/local/src/drush \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes openjdk-11-jdk
 
 # install Drupal
-RUN cd /app; drush dl drupal-7 ; mv drupal-7.* boa
-RUN cd /app/boa/sites/all/modules ; git clone https://github.com/boalang/drupal.git boa
+RUN cd /app; rm -f index.php ; drush dl drupal-7 ; mv drupal-7.*/* . ; mv drupal-7.*/.htaccess . ; rm -Rf drupal-7.*
+RUN cd /app/sites/all/modules ; git clone https://github.com/boalang/drupal.git boa
 
 # fix some settings for Drupal
 ADD conf/apache2.conf /etc/apache2/apache2.conf
-RUN cd /app/boa/sites/default ; cp default.settings.php settings.php ; chmod 666 settings.php ; chown www-data:staff settings.php ; mkdir files ; chmod 777 files ; chown www-data:staff files
+RUN cd /app/sites/default ; cp default.settings.php settings.php ; chmod 666 settings.php ; chown www-data:staff settings.php ; mkdir files ; chmod 777 files ; chown www-data:staff files
 
 # install Hadoop 1.2.1
 RUN groupadd hadoop
@@ -67,9 +67,9 @@ RUN chown hadoop:hadoop -R /home/hadoop/compiler
 # install Ace syntax highlighter
 #RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes npm
 #RUN cd /tmp ; git clone https://github.com/boalang/ace.git
-#RUN cd /tmp/ace ; npm install --no-audit ; nodejs /tmp/ace/Makefile.dryice.js full --target /app/boa/sites/all/libraries/ace
-ADD https://boa.cs.iastate.edu/cloudlab/ace.tgz /app/boa/sites/all/libraries/ace.tgz
-RUN cd /app/boa/sites/all/libraries ; tar xzf ace.tgz
+#RUN cd /tmp/ace ; npm install --no-audit ; nodejs /tmp/ace/Makefile.dryice.js full --target /app/sites/all/libraries/ace
+ADD https://boa.cs.iastate.edu/cloudlab/ace.tgz /app/sites/all/libraries/ace.tgz
+RUN cd /app/sites/all/libraries ; tar xzf ace.tgz
 
 # replace scripts with custom versions
 ADD scripts/run.sh /run.sh
