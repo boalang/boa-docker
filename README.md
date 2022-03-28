@@ -9,7 +9,7 @@ These instructions assume you have Docker compose available.
 
 ## Building the Image
 
-docker-compose build
+> docker-compose build
 
 ## Running a Container
 
