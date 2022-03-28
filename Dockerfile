@@ -73,8 +73,7 @@ ADD https://boa.cs.iastate.edu/cloudlab/ace.tgz /app/sites/all/libraries/ace.tgz
 RUN cd /app/sites/all/libraries ; tar xzf ace.tgz
 
 # make sure Boa output dir is ready
-RUN mkdir -p /home/boa/www/boa/output ; chmod 777 /home/boa/www/boa/output
-RUN cd /app ; ln -sf /home/boa/www/boa
+RUN mkdir -p /app/output ; chmod 777 /app/output
 
 # replace scripts with custom versions
 ADD scripts/run.sh /run.sh
