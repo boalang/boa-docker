@@ -16,11 +16,11 @@ docker-compose build
 By default, the compose file will make two directories `data` (containing the
 HDFS data) and `mysql` (for the SQL data).  For a clean run, first do:
 
-> `rm -Rf mysql data`
+> rm -Rf mysql data
 
 Then to run, just use compose:
 
-> `docker-compose up`
+> docker-compose up
 
 Once it fully loads, you will see instructions on the URL to connect to and the
 user/pw to use.  There should be a sample dataset installed as `live` that you
@@ -31,7 +31,7 @@ can use to test.
 The compose file will pick up the following environment variables, if they
 exist:
 
-- `BOA_USER=boa`
-- `BOA_PW=rocks`
-- `WWW_PUBLISHED_PORT=3000`
+- `BOA_USER=boa` the admin username to login to Boa's web interface
+- `BOA_PW=rocks` the admin password to login to Boa's web interface
+- `WWW_PUBLISHED_PORT=3000` the local port to run the web interface on
 
