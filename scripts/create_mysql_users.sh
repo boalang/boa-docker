@@ -68,12 +68,19 @@ echo "========================================================================"
 echo "Initializing Drupal..."
 pushd . >/dev/null 2>&1
 cd /app
+
 echo "y" | drush site-install standard --db-url=mysql://drupal:@localhost:3306/drupal install_configure_form.enable_update_status_emails=NULL --db-su=drupal --db-su-pw= --account-name=$BOA_USER --account-pass=$BOA_PW --site-name=boa >/dev/null 2>&1
 echo "y" | drush en boa >/dev/null 2>&1
+
 echo "y" | drush dis color comment dashboard help rdf search shortcut update >/dev/null 2>&1
+
 drush vset boa_output_path /app/output >/dev/null 2>&1
 drush vset boa_output_path_url output >/dev/null 2>&1
 drush vset boa_compiler_path /home/hadoop/compiler >/dev/null 2>&1
+
+drush scr welcome.php >/dev/null 2>&1
+rm -f welcome.php >/dev/null 2>&1
+
 popd >/dev/null 2>&1
 
 mysqladmin -uroot shutdown

@@ -75,6 +75,8 @@ RUN cd /app/sites/all/libraries ; tar xzf ace.tgz
 # make sure Boa output dir is ready
 RUN mkdir -p /app/output ; chmod 777 /app/output
 
+ADD scripts/welcome.php /app/welcome.php
+
 # replace scripts with custom versions
 ADD scripts/run.sh /run.sh
 ADD scripts/create_mysql_users.sh /create_mysql_users.sh
