@@ -1,6 +1,6 @@
 FROM mattrayner/lamp:latest-2004
 
-RUN apt-get update && apt-get install git php-xml zip
+RUN apt-get update && apt-get install --yes --no-install-recommends git php-xml zip
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && ln -s /usr/local/bin/composer /usr/bin/composer
