@@ -49,16 +49,19 @@ echo "=> Done!"
 echo "========================================================================"
 echo "You can now connect to this MySQL Server with $PASS"
 echo ""
-echo "    mysql -uadmin -p$PASS -h<host> -P<port>"
+echo "    mysql -uadmin -p$PASS -hlocalhost -P3001"
 echo ""
 echo "Please remember to change the above password as soon as possible!"
 echo "MySQL user 'root' has no password but only allows local connections"
 echo ""
 
 if [ "$CREATE_MYSQL_USER" = true ]; then
-    echo "We also created"
-    echo "A database called '${_userdb}' and"
-    echo "a user called '${_user}' with password '${_userpass}'"
+    echo "We also created:"
+    echo ""
+    echo "  a database called '${_userdb}' and"
+    echo "  a user called '${_user}'"
+    echo "  with password '${_userpass}'"
+    echo ""
     echo "'${_user}' has full access on '${_userdb}'"
 fi
 

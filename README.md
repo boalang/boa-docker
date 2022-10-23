@@ -34,4 +34,5 @@ exist:
 - `BOA_USER=boa` the admin username to login to Boa's web interface
 - `BOA_PW=rocks` the admin password to login to Boa's web interface
 - `WWW_PUBLISHED_PORT=3000` the local port to run the web interface on
+- `SQL_PUBLISHED_PORT=3001` the local port to access MySQL
 

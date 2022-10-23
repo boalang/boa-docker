@@ -20,7 +20,7 @@ services:
       - published: ${WWW_PUBLISHED_PORT:-3000}
         target: 80
       # MySQL
-      - published: 3001
+      - published: ${SQL_PUBLISHED_PORT:-3001}
         target: 3306
     volumes:
       - ./mysql:/var/lib/mysql
