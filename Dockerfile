@@ -14,7 +14,7 @@ RUN git clone https://github.com/drush-ops/drush.git /usr/local/src/drush \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes openjdk-11-jdk
 
 # install Drupal
-RUN cd /app; rm -f index.php ; drush dl drupal-7 ; mv drupal-7.*/* . ; mv drupal-7.*/.htaccess . ; rm -Rf drupal-7.*
+RUN cd /app; rm -f index.php ; drush dl drupal-7.90 ; mv drupal-7.*/* . ; mv drupal-7.*/.htaccess . ; rm -Rf drupal-7.*
 ADD https://api.github.com/repos/boalang/drupal/git/refs/heads/master boa-version.json
 RUN cd /app/sites/all/modules ; git clone https://github.com/boalang/drupal.git boa
 
@@ -60,17 +60,20 @@ ADD https://boa.cs.iastate.edu/cloudlab/data /home/hadoop/live-dataset/ast/data
 ADD https://boa.cs.iastate.edu/cloudlab/projects.seq /home/hadoop/live-dataset/projects.seq
 RUN chown hadoop:hadoop -R /home/hadoop/live-dataset/
 
-# add Boa compiler/runtime (needs to match the dataset)
-ADD https://boa.cs.iastate.edu/cloudlab/boa-compiler.jar /home/hadoop/compiler/live/dist/boa-compiler.jar
-ADD https://boa.cs.iastate.edu/cloudlab/boa-runtime.jar /home/hadoop/compiler/live/dist/boa-runtime.jar
-RUN chown hadoop:hadoop -R /home/hadoop/compiler
-
 # install Ace syntax highlighter
 #RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes npm
 #RUN cd /tmp ; git clone https://github.com/boalang/ace.git
 #RUN cd /tmp/ace ; npm install --no-audit ; nodejs /tmp/ace/Makefile.dryice.js full --target /app/sites/all/libraries/ace
 ADD https://boa.cs.iastate.edu/cloudlab/ace.tgz /app/sites/all/libraries/ace.tgz
 RUN cd /app/sites/all/libraries ; tar xzf ace.tgz
+
+# add Boa compiler/runtime (needs to match the dataset)
+#ADD https://boa.cs.iastate.edu/cloudlab/boa-compiler.jar /home/hadoop/compiler/live/dist/boa-compiler.jar
+#ADD https://boa.cs.iastate.edu/cloudlab/boa-runtime.jar /home/hadoop/compiler/live/dist/boa-runtime.jar
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes ant
+RUN cd / ; git clone --branch compiler-2021-08-Kotlin --single-branch --depth 1 https://github.com/boalang/compiler.git ; cd /compiler ; ant -Dprotobuf.uptodate=true
+RUN mkdir -p /home/hadoop/compiler/live/dist ; cp /compiler/dist/boa-compiler.jar /home/hadoop/compiler/live/dist/boa-compiler.jar ; cp /compiler/dist/boa-runtime.jar /home/hadoop/compiler/live/dist/boa-runtime.jar
+RUN chown hadoop:hadoop -R /home/hadoop/compiler
 
 # make sure Boa output dir is ready
 RUN mkdir -p /app/output ; chmod 777 /app/output
@@ -80,5 +83,9 @@ ADD scripts/welcome.php /app/welcome.php
 # replace scripts with custom versions
 ADD scripts/run.sh /run.sh
 ADD scripts/create_mysql_users.sh /create_mysql_users.sh
+
+# dataset building scripts
+ADD scripts/dataset-build.sh /usr/local/bin/dataset-build.sh
+ADD scripts/dataset-install.sh /usr/local/bin/dataset-install.sh
 
 CMD ["/run.sh"]
