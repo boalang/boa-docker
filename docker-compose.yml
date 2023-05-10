@@ -13,6 +13,7 @@ services:
       MYSQL_USER_NAME: drupal
       MYSQL_USER_PASS: ''
       WWW_PUBLISHED_PORT: ${WWW_PUBLISHED_PORT:-3000}
+      SQL_PUBLISHED_PORT: ${SQL_PUBLISHED_PORT:-3001}
       BOA_USER: ${BOA_USER:-boa}
       BOA_PW: ${BOA_PW:-rocks}
     ports:
