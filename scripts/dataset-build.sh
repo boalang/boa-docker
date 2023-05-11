@@ -2,7 +2,11 @@
 
 cd /compiler
 
-PROJECTS=( "apache/rocketmq" "apache/logging-log4j1" )
+if [ "$#" -eq 0 ]; then
+    PROJECTS=( "apache/rocketmq" "apache/logging-log4j1" )
+else
+    PROJECTS=( "$@" )
+fi
 
 # dont change below
 OUTPUTDIR="dataset-new"
