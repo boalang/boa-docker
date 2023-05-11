@@ -1,13 +1,19 @@
 #!/bin/bash
 
 if [ "$1" = "" ]; then
-    echo "usage: $0 <dataset name>"
+    echo "usage: $0 <dataset path> <dataset hdfs name>"
     exit
 fi
 
-DSNAME=$1
+if [ "$2" = "" ]; then
+    echo "usage: $0 <dataset path> <dataset hdfs name>"
+    exit
+fi
 
-cd /compiler/dataset-new/ds
+DSPATH=$1
+DSNAME=$2
+
+cd $DSPATH
 
 ~hadoop/hadoop-current/bin/hadoop dfs -rmr /repcache/$DSNAME 2>/dev/null
 
