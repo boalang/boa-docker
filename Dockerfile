@@ -70,7 +70,7 @@ RUN cd /app/sites/all/libraries ; tar xzf ace.tgz
 # add Boa compiler/runtime (needs to match the dataset)
 #ADD https://boa.cs.iastate.edu/cloudlab/boa-compiler.jar /home/hadoop/compiler/live/dist/boa-compiler.jar
 #ADD https://boa.cs.iastate.edu/cloudlab/boa-runtime.jar /home/hadoop/compiler/live/dist/boa-runtime.jar
-RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes ant
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --yes ant jq
 RUN cd / ; git clone --branch compiler-2021-08-Kotlin --single-branch --depth 1 https://github.com/boalang/compiler.git ; cd /compiler ; ant -Dprotobuf.uptodate=true
 RUN mkdir -p /home/hadoop/compiler/live/dist ; cp /compiler/dist/boa-compiler.jar /home/hadoop/compiler/live/dist/boa-compiler.jar ; cp /compiler/dist/boa-runtime.jar /home/hadoop/compiler/live/dist/boa-runtime.jar
 RUN chown hadoop:hadoop -R /home/hadoop/compiler
