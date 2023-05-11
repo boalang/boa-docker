@@ -3,7 +3,6 @@
 cd /compiler
 
 PROJECTS=( "apache/rocketmq" "apache/logging-log4j1" )
-PROJIDS=( "75164823" "206384" )
 
 # dont change below
 OUTPUTDIR="dataset-new"
@@ -16,7 +15,7 @@ changed="0"
 
 for i in "${!PROJECTS[@]}"; do
     PROJECT=${PROJECTS[i]}
-    PROJID=${PROJIDS[i]}
+    PROJID=`wget -qO - "https://api.github.com/repos/$PROJECT" | jq '.id'`
 
     echo "========================="
     echo "updating $PROJECT ($PROJID)..."
