@@ -87,5 +87,6 @@ ADD scripts/create_mysql_users.sh /create_mysql_users.sh
 # dataset building scripts
 ADD scripts/dataset-build.sh /usr/local/bin/dataset-build.sh
 ADD scripts/dataset-install.sh /usr/local/bin/dataset-install.sh
+ADD scripts/compiler-install.sh /usr/local/bin/compiler-install.sh
 
 CMD ["/run.sh"]
