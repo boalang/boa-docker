@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: boa-lamp:latest
-    container_name: boa-lamp
+    image: boidae:latest
+    container_name: boidae
     environment:
       CREATE_MYSQL_BASIC_USER_AND_DB: "true"
       MYSQL_USER_DB: drupal
