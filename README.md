@@ -13,10 +13,11 @@ These instructions assume you have Docker compose available.
 
 ## Running a Container
 
-By default, the compose file will make two directories `data` (containing the
-HDFS data) and `mysql` (for the SQL data).  For a clean run, first do:
+By default, the compose file will make two volumes `docker_hdfs` (containing
+the HDFS data) and `docker_mysql` (for the SQL data).  For a clean run, first
+do:
 
-> rm -Rf mysql data
+> docker-compose down -v
 
 Then to run, just use compose:
 

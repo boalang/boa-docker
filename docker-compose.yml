@@ -24,5 +24,8 @@ services:
       - published: ${SQL_PUBLISHED_PORT:-3001}
         target: 3306
     volumes:
-      - ./mysql:/var/lib/mysql
-      - ./data:/data
+      - mysql:/var/lib/mysql
+      - hdfs:/data
+volumes:
+  mysql:
+  hdfs:
